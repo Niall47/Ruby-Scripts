@@ -24,4 +24,8 @@ class Player
     @score += 1
   end
 
+  def resetScore()
+    @score = 0
+  end
+
 end
