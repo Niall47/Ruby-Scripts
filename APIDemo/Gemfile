@@ -1,0 +1,8 @@
+source "https://rubygems.org" do
+    gem 'bundler'
+    gem 'cucumber'
+    gem 'cucumber-expressions'
+    gem 'rspec'
+    gem 'rspec-expectations'
+    gem 'httparty'
+end
