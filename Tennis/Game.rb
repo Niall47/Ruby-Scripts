@@ -15,36 +15,38 @@ class Game
     winner.setScore
     game.push(winner.getName)
     p "#{@player1.getName}: #{@player1.getScore} - #{@player2.getName}: #{@player2.getScore}"
+    winner
   end
 
   def playGame
-    p "------GAME------"
-    100.times do
+    playPoint
+    until gameWinner?
       playPoint
-      if @player1.getScoreInt > 3 || @player2.getScoreInt > 3
-        if checkForGameWinner
-          p "#{whoWonGame.getName} won the game"
-          break
-        end
-      end
     end
-    p "-----------------"
     @player1.resetScore
     @player2.resetScore
+    whoWonGame
   end
 
   def playSet
-    while checkForSetWinner == false
+    playGame
+    until setWinner?
       playGame
     end
   end
 
-  def checkForGameWinner()
-    true if @player1.getScoreInt + 2 > @player2.getScoreInt || @player2.getScoreInt + 2 > @player1.getScoreInt
+  def gameWinner?()
+    #has anyone reached the minimum points to win game?
+    tooFewPoints = (@player1.getScoreInt > 3 || @player2.getScoreInt > 3)
+    #Has a player won by a margin of two?
+    advantage = !(@player1.getScoreInt + 2 > @player2.getScoreInt || @player2.getScoreInt + 2 > @player1.getScoreInt)
+    return (tooFewPoints || advantage)
   end
 
-  def checkForSetWinner()
-    false unless set.count > 6
+  def setWinner?()
+    winner = (whoWonSet.nil?)
+    advantage = (countGames.key(@player1.getName).to_i > 6 || countGames.key(@player1.getName).to_i > 6)
+    return (advantage || winner)
   end
 
   def whoWonGame()
@@ -57,21 +59,22 @@ class Game
     end
   end
 
-  def whoWonSet()
+  def countGames()
     counts = Hash.new(0)
     @set.each { |name| counts[name] += 1 }
+    counts
+  end
+
+  def whoWonSet()
+    counts = countGames
 
     player1 = counts.key(@player1.getName)
     player2 = counts.key(@player2.getName)
 
     if player1.nil? then return player2 end
     if player2.nil? then return player1 end
-
-    if player1 + 2 > player2
-      @player1
-    elsif player2 + 2 > player1
-      @player2
-    end
+    if player1 > player2 then return @player1 end
+    if player2 > player1 then return @player2 end
 
   end
 end
