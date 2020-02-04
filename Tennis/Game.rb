@@ -6,13 +6,13 @@ class Game
   end
 
   def checkForWinner()
-    true if @player1.getScoreInt + 2 > @player2.getScoreInt or @player2.getScoreInt + 2 > @player1.getScoreInt
+    true if @player1.getScoreInt + 2 > @player2.getScoreInt || @player2.getScoreInt + 2 > @player1.getScoreInt
   end
 
   def playPoint
-    winner = [@player1, @player2].sample.setScore
+    [@player1, @player2].sample.setScore
     p "#{@player1.getName}: #{@player1.getScore} - #{@player2.getName}: #{@player2.getScore}"
-    winner
+
   end
 
   def whoWon()
